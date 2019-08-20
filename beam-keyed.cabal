@@ -1,0 +1,19 @@
+name:                beam-keyed
+version:             0.1.0.0
+license:             MIT
+license-file:        LICENSE
+author:              Ken Micklas
+category:            Database
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  exposed-modules: Database.Beam.Keyed
+  build-depends: aeson
+               , base >=4.11 && <4.12
+               , beam-core
+               , beam-migrate
+               , lens
+               , text
+  hs-source-dirs: src
+  default-language: Haskell2010
