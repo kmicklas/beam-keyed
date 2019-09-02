@@ -10,7 +10,7 @@ cabal-version:       >=1.10
 library
   exposed-modules: Database.Beam.Keyed
   build-depends: aeson
-               , base >=4.11 && <4.12
+               , base
                , beam-core
                , beam-migrate
                , lens
