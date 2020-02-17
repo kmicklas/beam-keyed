@@ -12,6 +12,7 @@ module Database.Beam.Keyed where
 
 import           Control.Lens
 import           Data.Aeson
+import           Data.Hashable
 import           Data.Text
 import           Database.Beam
 import           Database.Beam.Migrate
@@ -42,6 +43,7 @@ deriving instance (HasKey value, Eq (KeyT value f), Eq (value f)) => Eq (KeyedT 
 deriving instance (HasKey value, Ord (KeyT value f), Ord (value f)) => Ord (KeyedT value f)
 deriving instance (HasKey value, Show (KeyT value f), Show (value f)) => Show (KeyedT value f)
 deriving instance (HasKey value, Read (KeyT value f), Read (value f)) => Read (KeyedT value f)
+deriving instance (HasKey value, Hashable (KeyT value f), Hashable (value f)) => Hashable (KeyedT value f)
 deriving instance (HasKey value, ToJSON (KeyT value f), ToJSON (value f)) => ToJSON (KeyedT value f)
 deriving instance (HasKey value, FromJSON (KeyT value f), FromJSON (value f)) => FromJSON (KeyedT value f)
 
@@ -56,6 +58,7 @@ deriving instance (Eq (KeyT value f)) => Eq (RowKeyT f value)
 deriving instance (Ord (KeyT value f)) => Ord (RowKeyT f value)
 deriving instance (Show (KeyT value f)) => Show (RowKeyT f value)
 deriving instance (Read (KeyT value f)) => Read (RowKeyT f value)
+deriving newtype instance (Hashable (KeyT value f)) => Hashable (RowKeyT f value)
 deriving newtype instance (ToJSON (KeyT value f)) => ToJSON (RowKeyT f value)
 deriving newtype instance (FromJSON (KeyT value f)) => FromJSON (RowKeyT f value)
 deriving anyclass instance (ToJSON (KeyT value f)) => ToJSONKey (RowKeyT f value)
@@ -90,6 +93,7 @@ deriving instance Eq (C f (Id value)) => Eq (IdKeyT value f)
 deriving instance Ord (C f (Id value)) => Ord (IdKeyT value f)
 deriving instance Show (C f (Id value)) => Show (IdKeyT value f)
 deriving instance Read (C f (Id value)) => Read (IdKeyT value f)
+deriving newtype instance Hashable (C f (Id value)) => Hashable (IdKeyT value f)
 deriving newtype instance ToJSON (C f (Id value)) => ToJSON (IdKeyT value f)
 deriving newtype instance FromJSON (C f (Id value)) => FromJSON (IdKeyT value f)
 deriving newtype instance ToJSONKey (C f (Id value)) => ToJSONKey (IdKeyT value f)
