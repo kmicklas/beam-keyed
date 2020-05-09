@@ -13,9 +13,7 @@ module Database.Beam.Keyed where
 import           Control.Lens
 import           Data.Aeson
 import           Data.Hashable
-import           Data.Text
 import           Database.Beam
-import           Database.Beam.Migrate
 
 class HasKey (value :: (* -> *) -> *) where
   -- | Associates a database table's value (non-key) component with its key type.
@@ -98,34 +96,6 @@ deriving newtype instance ToJSON (C f (Id value)) => ToJSON (IdKeyT value f)
 deriving newtype instance FromJSON (C f (Id value)) => FromJSON (IdKeyT value f)
 deriving newtype instance ToJSONKey (C f (Id value)) => ToJSONKey (IdKeyT value f)
 deriving newtype instance FromJSONKey (C f (Id value)) => FromJSONKey (IdKeyT value f)
-
--- | Construct a 'EntityModification' for a 'Keyed' table.
-checkedKeyed
-  :: Text -- ^ The table name in the schema.
-  -> KeyT value (CheckedFieldModification (KeyedT value))
-  -> value (CheckedFieldModification (KeyedT value))
-  -> EntityModification (CheckedDatabaseEntity be db) be (TableEntity (KeyedT value))
-checkedKeyed name k v = modifyCheckedTable (const name) $ Keyed
-  { _keyed_key = k
-  , _keyed_value = v
-  }
-
--- | Construct a 'EntityModification' for a 'Keyed' table with a
--- single-column 'Id'-based primary key which will be named "id" in the schema.
-checkedKeyedWithId
-  :: (KeyT value ~ IdKeyT value')
-  => Text
-  -> value (CheckedFieldModification (KeyedT value))
-  -> EntityModification (CheckedDatabaseEntity be db) be (TableEntity (KeyedT value))
-checkedKeyedWithId name = checkedKeyed name $ IdKey $ checkedFieldNamed $ pack "id"
-
--- | Construct a 'CheckedFieldModification' for a foreign key to a 'Keyed'
--- table.
-checkedForeignKeyIdFieldNamed
-  :: (HasIdKey value a)
-  => Text
-  -> IdKeyT value (CheckedFieldModification (KeyedT value'))
-checkedForeignKeyIdFieldNamed = IdKey . checkedFieldNamed
 
 keyed_rowKey :: Lens' (KeyedT value f) (RowKeyT f value)
 keyed_rowKey = keyed_key . from rowKey_data

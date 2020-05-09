@@ -1,5 +1,5 @@
 cabal-version: 2.4
-name:          beam-keyed
+name:          beam-keyed-migrate
 version:       0.1.0.0
 license:       MIT
 license-file:  LICENSE
@@ -8,13 +8,13 @@ category:      Database
 build-type:    Simple
 
 library
-  exposed-modules:  Database.Beam.Keyed
+  exposed-modules:  Database.Beam.Keyed.Migrate
   build-depends:
-    , aeson
     , base
     , beam-core
-    , hashable
-    , lens
+    , beam-keyed
+    , beam-migrate
+    , text
 
   hs-source-dirs:   src
   default-language: Haskell2010
